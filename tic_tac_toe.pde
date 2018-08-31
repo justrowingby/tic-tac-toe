@@ -1,3 +1,42 @@
+// game opens on a square, 400x400 pixel java applet window
+
+// game starts on  a start screen with option
+// to start a new game
+
+// in the first game, X gets the first move.
+// there is an indicator in the upper right hand corner
+// which tells whose turn it displayDensity()
+
+// Xs are always blue
+// Os are always red
+
+// if the game is won by either side,
+// the letters in the winning three-in-a-row
+// turn green
+
+// if the game is tied, all letters turn magenta
+
+// regardless of win or tie, the win-screen appears when a game ends
+// the win screen displays the score for the current volley of rounds
+// X score is on the left in blue, O score is on the right in red
+// and number of ties is displayed in a center box in magenta
+// the win-screen also displays options for a new round,
+// which retains existing scores, or a new game,
+// which wipes the existing scores,
+// for example, in case a new set of players would like to play
+
+// if a new ROUND is started,
+// the winner of the last round gets their turn first
+
+// if a new GAME (set of rounds) is started,
+// X gets the first move, as with the very first round
+
+// the users can play as many rounds and/or games
+// as they like before closing the program
+// by closing the java applet window
+
+
+
 boolean startScreen = true;
 boolean playing = false;
 boolean winScreen = false;
@@ -14,7 +53,7 @@ void setup(){
   background(185);
   textAlign(LEFT);
   fill(0);
-  textSize(sqrt(height*width)/3.125); 
+  textSize(sqrt(height*width)/3.125);
   for(int krj = 0; krj < 9; krj++){
     S[krj] = 0;
     C[krj] = 0;
@@ -22,7 +61,7 @@ void setup(){
 }
 
 void draw(){
-  
+
   if(tooMuch){
     background(185);
     textAlign(CENTER);
@@ -37,7 +76,7 @@ void draw(){
       strokeWeight(sqrt(height*width)/80);
       rect(width*6/24, height*10.25/24, width*12/24, height*3.5/24, sqrt(height*width)/100);
       rect(width*6/24, height*14.5/24, width*12/24, height*3.5/24, sqrt(height*width)/100);
-      
+
       rect(width*6/24, height*6/24, width*3/24, height*3.5/24, sqrt(height*width)/100);
       rect(width*10.5/24, height*6/24, width*3/24, height*3.5/24, sqrt(height*width)/100);
       rect(width*15/24, height*6/24, width*3/24, height*3.5/24, sqrt(height*width)/100);
@@ -53,12 +92,12 @@ void draw(){
       fill(200, 0, 0);
       text(yWins, width*16.5/24, height*8.4/24);
       textAlign(LEFT);
-      textSize(sqrt(height*width)/3.125); 
+      textSize(sqrt(height*width)/3.125);
     }
-    
+
     if(playing){
-        if((S[0]==1 && S[1]==1 && S[2]==1) || 
-            (S[3]==1 && S[4]==1 && S[5]==1) || 
+        if((S[0]==1 && S[1]==1 && S[2]==1) ||
+            (S[3]==1 && S[4]==1 && S[5]==1) ||
             (S[6]==1 && S[7]==1 && S[8]==1) ||
             (S[0]==1 && S[3]==1 && S[6]==1) ||
             (S[1]==1 && S[4]==1 && S[7]==1) ||
@@ -78,8 +117,8 @@ void draw(){
             playing = false;
             winScreen = true;
         }
-        if((S[0]==2 && S[1]==2 && S[2]==2) || 
-            (S[3]==2 && S[4]==2 && S[5]==2) || 
+        if((S[0]==2 && S[1]==2 && S[2]==2) ||
+            (S[3]==2 && S[4]==2 && S[5]==2) ||
             (S[6]==2 && S[7]==2 && S[8]==2) ||
             (S[0]==2 && S[3]==2 && S[6]==2) ||
             (S[1]==2 && S[4]==2 && S[7]==2) ||
@@ -99,18 +138,18 @@ void draw(){
           playing = false;
           winScreen = true;
         }
-      
-      if( (!(S[0]==0)) && (!(S[1]==0)) && (!(S[2]==0)) && (!(S[3]==0)) && (!(S[4]==0)) && (!(S[5]==0)) && (!(S[6]==0)) && (!(S[7]==0)) && (!(S[8]==0)) 
-          && (!((S[0]==1 && S[1]==1 && S[2]==1) || 
-            (S[3]==1 && S[4]==1 && S[5]==1) || 
+
+      if( (!(S[0]==0)) && (!(S[1]==0)) && (!(S[2]==0)) && (!(S[3]==0)) && (!(S[4]==0)) && (!(S[5]==0)) && (!(S[6]==0)) && (!(S[7]==0)) && (!(S[8]==0))
+          && (!((S[0]==1 && S[1]==1 && S[2]==1) ||
+            (S[3]==1 && S[4]==1 && S[5]==1) ||
             (S[6]==1 && S[7]==1 && S[8]==1) ||
             (S[0]==1 && S[3]==1 && S[6]==1) ||
             (S[1]==1 && S[4]==1 && S[7]==1) ||
             (S[2]==1 && S[5]==1 && S[8]==1) ||
             (S[0]==1 && S[4]==1 && S[8]==1) ||
             (S[2]==1 && S[4]==1 && S[6]==1)))
-          && (!((S[0]==2 && S[1]==2 && S[2]==2) || 
-            (S[3]==2 && S[4]==2 && S[5]==2) || 
+          && (!((S[0]==2 && S[1]==2 && S[2]==2) ||
+            (S[3]==2 && S[4]==2 && S[5]==2) ||
             (S[6]==2 && S[7]==2 && S[8]==2) ||
             (S[0]==2 && S[3]==2 && S[6]==2) ||
             (S[1]==2 && S[4]==2 && S[7]==2) ||
@@ -146,9 +185,9 @@ void draw(){
       text("Turn: O", width*23/27, height*1/24);
       }
       textSize(sqrt(height*width)/3.125);
-      
+
       fill(0);
-      
+
       for(int i = 0; i < 9; i++){
         float xMin = 0;
         if(i % 3 == 1){
@@ -157,7 +196,7 @@ void draw(){
         if(i % 3 == 2){
           xMin = width/3*2;
         }
-        
+
         float yMin = 0;
         if(i > 2){
           yMin = width/3;
@@ -166,27 +205,27 @@ void draw(){
           yMin = width/3*2;
         }
         float yMax = yMin + width/3;
-        
+
         if(S[i] == 1){
           if(C[i] == 1){
             fill(0, 200, 0);
             text("X", xMin + width/16.5, yMax - height/27*1.5);
-            
-          } 
+
+          }
           if(C[i] == 2){
             fill(200, 0, 200);
             text("X", xMin + width/16.5, yMax - height/27*1.5);
-          } 
+          }
           if(C[i] == 0){
             fill(0, 0, 200);
             text("X", xMin + width/16.5, yMax - height/27*1.5);
           }
-          
+
         }
         if(S[i] == 2){
           if(C[i] == 1){
             fill(0, 200, 0);
-          } 
+          }
           if(C[i] == 2){
             fill(200, 0, 200);
           }
@@ -197,7 +236,7 @@ void draw(){
         }
       }
     }
-    
+
     if(startScreen){
       fill(190);
       strokeWeight(sqrt(height*width)/80);
@@ -207,7 +246,7 @@ void draw(){
       textSize(sqrt(height*width)/13.5);
       text("NEW GAME", width/2, height*12.70/24);
       textAlign(LEFT);
-      textSize(sqrt(height*width)/3.125); 
+      textSize(sqrt(height*width)/3.125);
     }
   }
   if(xWins > 99 || yWins > 99 || ties > 99){
@@ -219,7 +258,7 @@ void draw(){
 void mousePressed(){
   //The following define the clickable bounding boxes for any buttons used.
   //Note that these boundaries should match those drawn in the draw() function.
-  
+
   if(playing){
     if(!((mouseX > width/3*1-(sqrt(height*width)/40/2) && mouseX < width/3*1+(sqrt(height*width)/40/2)) ||
     (mouseX > width/3*2-(sqrt(height*width)/40/2) && mouseX < width/3*2+(sqrt(height*width)/40/2)) ||
@@ -234,7 +273,7 @@ void mousePressed(){
           xMin = width/3*2;
         }
         float xMax = xMin + width/3;
-        
+
         float yMin = 0;
         if(i > 2){
           yMin = width/3;
@@ -243,7 +282,7 @@ void mousePressed(){
           yMin = width/3*2;
         }
         float yMax = yMin + width/3;
-        
+
         if (mouseX>xMin && mouseX<xMax && mouseY>yMin && mouseY<yMax){
           if(S[i]==0){
             if(turn==0){
@@ -260,7 +299,7 @@ void mousePressed(){
       }
     }
   }
-  
+
   if(startScreen){
     if (mouseX>width*6/24 && mouseX<width*18/24 && mouseY>height*10.25/24 && mouseY<height*13.75/24){
       startScreen = false;
@@ -268,7 +307,7 @@ void mousePressed(){
       redraw();
     }
   }
-  
+
   if(winScreen){
     if (mouseX>width*6/24 && mouseX<width*18/24 && mouseY>height*14.5/24 && mouseY<height*18/24){
       if(turn==0){
