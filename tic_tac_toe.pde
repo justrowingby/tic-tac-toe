@@ -93,14 +93,24 @@ int ties = 0;
 
 void setup(){
   size(400, 400);
+  // defines size of java applet window to be 400x400 pixels
+  // in theory, this value can be adjusted, and the drawings will adjust
+  // but this has not been extensively tested
   background(185);
+  // background color is gray. it can be anything you like
   textAlign(LEFT);
+  // don't change this.
   fill(0);
   textSize(sqrt(height*width)/3.125);
+  // text size is defined based on the size of the window
+  // in an attempt to accomodate possible variance of window size
   for(int krj = 0; krj < 9; krj++){
     stateOfBoard[krj] = 0;
     colors[krj] = 0;
   }
+  // the board is initialized
+  // with the state of each tile starting as empty (0)
+  // and the state of each tile's special colors being regular play (0)
 }
 
 ////////////////////////////////////////////////////////////////
