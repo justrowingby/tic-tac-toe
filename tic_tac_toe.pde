@@ -124,7 +124,7 @@ void draw(){
     textAlign(CENTER);
     textSize(sqrt(height*width)/27);
     fill(0);
-    text("This is really too much. Please go outside.", width/2, height/2);
+    text("You've been playing a long time. Maybe go outside?", width/2, height/2);
   }
   else{
     if(winScreen ){
