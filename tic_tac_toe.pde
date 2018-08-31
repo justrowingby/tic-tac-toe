@@ -39,15 +39,42 @@
 
 
 boolean startScreen = true;
+// determines whether the start screen should be drawn
 boolean playing = false;
+// determines whether the playing board should be drawn,
+// whether the game should accept clicks as the placement
+// of Xs and Os, and whether the game should check for wins and ties
 boolean winScreen = false;
+// determines whether the win-screen should be drawn
+// win-screen is displayed after every round
+// win-screen holds score and the ability to play again
 boolean tooMuch = false;
+// inserted as a joke, if you play with more than 99
+// X-wins, O-wins, or ties, individually, the game
+// will ask you to stop playing and go outside
 int turn = 0;
-int[] S = new int[9];
-int[] C = new int[9];
+// is it X's turn, or O's?
+// 0 indicates X
+// 1 indicates O
+int[] stateOfBoard = new int[9];
+// stores the current state of the board
+// possible values are 0, 1, 2
+// a 0 indicates an empty tile
+// a 1 indicates an X occupying a tile
+// a 2 indicates an O occupying a tile
+int[] colors = new int[9];
+// stores the state of special color values on the board
+// possible values are 0, 1, 2
+// a 0 indicates normal play. X gets blue and O gets red
+// a 1 is used when a win has occurred. the winning three-in-a-row
+// gets a colors[] value of 1 and turns green
+// a 2 is used when a tie occurs. every letter on the board
+// gets a color[] value of 2 and turns magenta
 int xWins = 0;
 int yWins = 0;
 int ties = 0;
+// score values for each condition,
+// stored between rounds, but not separate games
 
 void setup(){
   size(400, 400);
@@ -56,8 +83,8 @@ void setup(){
   fill(0);
   textSize(sqrt(height*width)/3.125);
   for(int krj = 0; krj < 9; krj++){
-    S[krj] = 0;
-    C[krj] = 0;
+    stateOfBoard[krj] = 0;
+    colors[krj] = 0;
   }
 }
 
@@ -97,69 +124,69 @@ void draw(){
     }
 
     if(playing){
-        if((S[0]==1 && S[1]==1 && S[2]==1) ||
-            (S[3]==1 && S[4]==1 && S[5]==1) ||
-            (S[6]==1 && S[7]==1 && S[8]==1) ||
-            (S[0]==1 && S[3]==1 && S[6]==1) ||
-            (S[1]==1 && S[4]==1 && S[7]==1) ||
-            (S[2]==1 && S[5]==1 && S[8]==1) ||
-            (S[0]==1 && S[4]==1 && S[8]==1) ||
-            (S[2]==1 && S[4]==1 && S[6]==1)
+        if((stateOfBoard[0]==1 && stateOfBoard[1]==1 && stateOfBoard[2]==1) ||
+            (stateOfBoard[3]==1 && stateOfBoard[4]==1 && stateOfBoard[5]==1) ||
+            (stateOfBoard[6]==1 && stateOfBoard[7]==1 && stateOfBoard[8]==1) ||
+            (stateOfBoard[0]==1 && stateOfBoard[3]==1 && stateOfBoard[6]==1) ||
+            (stateOfBoard[1]==1 && stateOfBoard[4]==1 && stateOfBoard[7]==1) ||
+            (stateOfBoard[2]==1 && stateOfBoard[5]==1 && stateOfBoard[8]==1) ||
+            (stateOfBoard[0]==1 && stateOfBoard[4]==1 && stateOfBoard[8]==1) ||
+            (stateOfBoard[2]==1 && stateOfBoard[4]==1 && stateOfBoard[6]==1)
           ){
-            if((S[0]==1 && S[1]==1 && S[2]==1)){ C[0]=1; C[1]=1; C[2]=1;}
-            if((S[3]==1 && S[4]==1 && S[5]==1)){ C[3]=1; C[4]=1; C[5]=1;}
-            if((S[6]==1 && S[7]==1 && S[8]==1)){ C[6]=1; C[7]=1; C[8]=1;}
-            if((S[0]==1 && S[3]==1 && S[6]==1)){ C[0]=1; C[3]=1; C[6]=1;}
-            if((S[1]==1 && S[4]==1 && S[7]==1)){ C[1]=1; C[4]=1; C[7]=1;}
-            if((S[2]==1 && S[5]==1 && S[8]==1)){ C[2]=1; C[5]=1; C[8]=1;}
-            if((S[0]==1 && S[4]==1 && S[8]==1)){ C[0]=1; C[4]=1; C[8]=1;}
-            if((S[2]==1 && S[4]==1 && S[6]==1)){ C[2]=1; C[4]=1; C[6]=1;}
+            if((stateOfBoard[0]==1 && stateOfBoard[1]==1 && stateOfBoard[2]==1)){ colors[0]=1; colors[1]=1; colors[2]=1;}
+            if((stateOfBoard[3]==1 && stateOfBoard[4]==1 && stateOfBoard[5]==1)){ colors[3]=1; colors[4]=1; colors[5]=1;}
+            if((stateOfBoard[6]==1 && stateOfBoard[7]==1 && stateOfBoard[8]==1)){ colors[6]=1; colors[7]=1; colors[8]=1;}
+            if((stateOfBoard[0]==1 && stateOfBoard[3]==1 && stateOfBoard[6]==1)){ colors[0]=1; colors[3]=1; colors[6]=1;}
+            if((stateOfBoard[1]==1 && stateOfBoard[4]==1 && stateOfBoard[7]==1)){ colors[1]=1; colors[4]=1; colors[7]=1;}
+            if((stateOfBoard[2]==1 && stateOfBoard[5]==1 && stateOfBoard[8]==1)){ colors[2]=1; colors[5]=1; colors[8]=1;}
+            if((stateOfBoard[0]==1 && stateOfBoard[4]==1 && stateOfBoard[8]==1)){ colors[0]=1; colors[4]=1; colors[8]=1;}
+            if((stateOfBoard[2]==1 && stateOfBoard[4]==1 && stateOfBoard[6]==1)){ colors[2]=1; colors[4]=1; colors[6]=1;}
             xWins++;
             playing = false;
             winScreen = true;
         }
-        if((S[0]==2 && S[1]==2 && S[2]==2) ||
-            (S[3]==2 && S[4]==2 && S[5]==2) ||
-            (S[6]==2 && S[7]==2 && S[8]==2) ||
-            (S[0]==2 && S[3]==2 && S[6]==2) ||
-            (S[1]==2 && S[4]==2 && S[7]==2) ||
-            (S[2]==2 && S[5]==2 && S[8]==2) ||
-            (S[0]==2 && S[4]==2 && S[8]==2) ||
-            (S[2]==2 && S[4]==2 && S[6]==2)
+        if((stateOfBoard[0]==2 && stateOfBoard[1]==2 && stateOfBoard[2]==2) ||
+            (stateOfBoard[3]==2 && stateOfBoard[4]==2 && stateOfBoard[5]==2) ||
+            (stateOfBoard[6]==2 && stateOfBoard[7]==2 && stateOfBoard[8]==2) ||
+            (stateOfBoard[0]==2 && stateOfBoard[3]==2 && stateOfBoard[6]==2) ||
+            (stateOfBoard[1]==2 && stateOfBoard[4]==2 && stateOfBoard[7]==2) ||
+            (stateOfBoard[2]==2 && stateOfBoard[5]==2 && stateOfBoard[8]==2) ||
+            (stateOfBoard[0]==2 && stateOfBoard[4]==2 && stateOfBoard[8]==2) ||
+            (stateOfBoard[2]==2 && stateOfBoard[4]==2 && stateOfBoard[6]==2)
           ){
-            if((S[0]==2 && S[1]==2 && S[2]==2)){ C[0]=1; C[1]=1; C[2]=1;}
-            if((S[3]==2 && S[4]==2 && S[5]==2)){ C[3]=1; C[4]=1; C[5]=1;}
-            if((S[6]==2 && S[7]==2 && S[8]==2)){ C[6]=1; C[7]=1; C[8]=1;}
-            if((S[0]==2 && S[3]==2 && S[6]==2)){ C[0]=1; C[3]=1; C[6]=1;}
-            if((S[1]==2 && S[4]==2 && S[7]==2)){ C[1]=1; C[4]=1; C[7]=1;}
-            if((S[2]==2 && S[5]==2 && S[8]==2)){ C[2]=1; C[5]=1; C[8]=1;}
-            if((S[0]==2 && S[4]==2 && S[8]==2)){ C[0]=1; C[4]=1; C[8]=1;}
-            if((S[2]==2 && S[4]==2 && S[6]==2)){ C[2]=1; C[4]=1; C[6]=1;}
+            if((stateOfBoard[0]==2 && stateOfBoard[1]==2 && stateOfBoard[2]==2)){ colors[0]=1; colors[1]=1; colors[2]=1;}
+            if((stateOfBoard[3]==2 && stateOfBoard[4]==2 && stateOfBoard[5]==2)){ colors[3]=1; colors[4]=1; colors[5]=1;}
+            if((stateOfBoard[6]==2 && stateOfBoard[7]==2 && stateOfBoard[8]==2)){ colors[6]=1; colors[7]=1; colors[8]=1;}
+            if((stateOfBoard[0]==2 && stateOfBoard[3]==2 && stateOfBoard[6]==2)){ colors[0]=1; colors[3]=1; colors[6]=1;}
+            if((stateOfBoard[1]==2 && stateOfBoard[4]==2 && stateOfBoard[7]==2)){ colors[1]=1; colors[4]=1; colors[7]=1;}
+            if((stateOfBoard[2]==2 && stateOfBoard[5]==2 && stateOfBoard[8]==2)){ colors[2]=1; colors[5]=1; colors[8]=1;}
+            if((stateOfBoard[0]==2 && stateOfBoard[4]==2 && stateOfBoard[8]==2)){ colors[0]=1; colors[4]=1; colors[8]=1;}
+            if((stateOfBoard[2]==2 && stateOfBoard[4]==2 && stateOfBoard[6]==2)){ colors[2]=1; colors[4]=1; colors[6]=1;}
           yWins++;
           playing = false;
           winScreen = true;
         }
 
-      if( (!(S[0]==0)) && (!(S[1]==0)) && (!(S[2]==0)) && (!(S[3]==0)) && (!(S[4]==0)) && (!(S[5]==0)) && (!(S[6]==0)) && (!(S[7]==0)) && (!(S[8]==0))
-          && (!((S[0]==1 && S[1]==1 && S[2]==1) ||
-            (S[3]==1 && S[4]==1 && S[5]==1) ||
-            (S[6]==1 && S[7]==1 && S[8]==1) ||
-            (S[0]==1 && S[3]==1 && S[6]==1) ||
-            (S[1]==1 && S[4]==1 && S[7]==1) ||
-            (S[2]==1 && S[5]==1 && S[8]==1) ||
-            (S[0]==1 && S[4]==1 && S[8]==1) ||
-            (S[2]==1 && S[4]==1 && S[6]==1)))
-          && (!((S[0]==2 && S[1]==2 && S[2]==2) ||
-            (S[3]==2 && S[4]==2 && S[5]==2) ||
-            (S[6]==2 && S[7]==2 && S[8]==2) ||
-            (S[0]==2 && S[3]==2 && S[6]==2) ||
-            (S[1]==2 && S[4]==2 && S[7]==2) ||
-            (S[2]==2 && S[5]==2 && S[8]==2) ||
-            (S[0]==2 && S[4]==2 && S[8]==2) ||
-            (S[2]==2 && S[4]==2 && S[6]==2)))
+      if( (!(stateOfBoard[0]==0)) && (!(stateOfBoard[1]==0)) && (!(stateOfBoard[2]==0)) && (!(stateOfBoard[3]==0)) && (!(stateOfBoard[4]==0)) && (!(stateOfBoard[5]==0)) && (!(stateOfBoard[6]==0)) && (!(stateOfBoard[7]==0)) && (!(stateOfBoard[8]==0))
+          && (!((stateOfBoard[0]==1 && stateOfBoard[1]==1 && stateOfBoard[2]==1) ||
+            (stateOfBoard[3]==1 && stateOfBoard[4]==1 && stateOfBoard[5]==1) ||
+            (stateOfBoard[6]==1 && stateOfBoard[7]==1 && stateOfBoard[8]==1) ||
+            (stateOfBoard[0]==1 && stateOfBoard[3]==1 && stateOfBoard[6]==1) ||
+            (stateOfBoard[1]==1 && stateOfBoard[4]==1 && stateOfBoard[7]==1) ||
+            (stateOfBoard[2]==1 && stateOfBoard[5]==1 && stateOfBoard[8]==1) ||
+            (stateOfBoard[0]==1 && stateOfBoard[4]==1 && stateOfBoard[8]==1) ||
+            (stateOfBoard[2]==1 && stateOfBoard[4]==1 && stateOfBoard[6]==1)))
+          && (!((stateOfBoard[0]==2 && stateOfBoard[1]==2 && stateOfBoard[2]==2) ||
+            (stateOfBoard[3]==2 && stateOfBoard[4]==2 && stateOfBoard[5]==2) ||
+            (stateOfBoard[6]==2 && stateOfBoard[7]==2 && stateOfBoard[8]==2) ||
+            (stateOfBoard[0]==2 && stateOfBoard[3]==2 && stateOfBoard[6]==2) ||
+            (stateOfBoard[1]==2 && stateOfBoard[4]==2 && stateOfBoard[7]==2) ||
+            (stateOfBoard[2]==2 && stateOfBoard[5]==2 && stateOfBoard[8]==2) ||
+            (stateOfBoard[0]==2 && stateOfBoard[4]==2 && stateOfBoard[8]==2) ||
+            (stateOfBoard[2]==2 && stateOfBoard[4]==2 && stateOfBoard[6]==2)))
       ){
         for(int krj = 0; krj < 9; krj++){
-          C[krj] = 2;
+          colors[krj] = 2;
         }
         ties++;
         playing = false;
@@ -207,30 +234,30 @@ void draw(){
         }
         float yMax = yMin + width/3;
 
-        if(S[i] == 1){
-          if(C[i] == 1){
+        if(stateOfBoard[i] == 1){
+          if(colors[i] == 1){
             fill(0, 200, 0);
             text("X", xMin + width/16.5, yMax - height/27*1.5);
 
           }
-          if(C[i] == 2){
+          if(colors[i] == 2){
             fill(200, 0, 200);
             text("X", xMin + width/16.5, yMax - height/27*1.5);
           }
-          if(C[i] == 0){
+          if(colors[i] == 0){
             fill(0, 0, 200);
             text("X", xMin + width/16.5, yMax - height/27*1.5);
           }
 
         }
-        if(S[i] == 2){
-          if(C[i] == 1){
+        if(stateOfBoard[i] == 2){
+          if(colors[i] == 1){
             fill(0, 200, 0);
           }
-          if(C[i] == 2){
+          if(colors[i] == 2){
             fill(200, 0, 200);
           }
-          if(C[i] == 0){
+          if(colors[i] == 0){
             fill(200, 0, 0);
           }
           text("O", xMin + width/27, yMax - height/27*1.5);
@@ -285,13 +312,13 @@ void mousePressed(){
         float yMax = yMin + width/3;
 
         if (mouseX>xMin && mouseX<xMax && mouseY>yMin && mouseY<yMax){
-          if(S[i]==0){
+          if(stateOfBoard[i]==0){
             if(turn==0){
-              S[i] = 1;
+              stateOfBoard[i] = 1;
               turn = 1;
             } else{
               if(turn==1){
-                S[i] = 2;
+                stateOfBoard[i] = 2;
                 turn = 0;
               }
             }
@@ -319,8 +346,8 @@ void mousePressed(){
         }
       }
       for(int krj = 0; krj < 9; krj++){
-        S[krj] = 0;
-        C[krj] = 0;
+        stateOfBoard[krj] = 0;
+        colors[krj] = 0;
       }
       xWins = 0;
       yWins = 0;
@@ -339,8 +366,8 @@ void mousePressed(){
         }
       }
       for(int krj = 0; krj < 9; krj++){
-        S[krj] = 0;
-        C[krj] = 0;
+        stateOfBoard[krj] = 0;
+        colors[krj] = 0;
       }
       winScreen = false;
       playing = true;
