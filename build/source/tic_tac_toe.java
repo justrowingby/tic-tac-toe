@@ -1,3 +1,19 @@
+import processing.core.*; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
+
+import java.util.HashMap; 
+import java.util.ArrayList; 
+import java.io.File; 
+import java.io.BufferedReader; 
+import java.io.PrintWriter; 
+import java.io.InputStream; 
+import java.io.OutputStream; 
+import java.io.IOException; 
+
+public class tic_tac_toe extends PApplet {
+
 // game opens on a square, 400x400 pixel java applet window
 
 // game starts on  a start screen with option
@@ -29,8 +45,7 @@
 // the winner of the last round gets their turn first
 
 // if a new GAME (set of rounds) is started,
-// the last letter that won starts regardless.
-// this is indicated in the top right corner.
+// X gets the first move, as with the very first round
 
 // the users can play as many rounds and/or games
 // as they like before closing the program
@@ -49,19 +64,19 @@ int xWins = 0;
 int yWins = 0;
 int ties = 0;
 
-void setup(){
-  size(400, 400);
+public void setup(){
+  
   background(185);
   textAlign(LEFT);
   fill(0);
-  textSize(sqrt(height*width)/3.125);
+  textSize(sqrt(height*width)/3.125f);
   for(int krj = 0; krj < 9; krj++){
     S[krj] = 0;
     C[krj] = 0;
   }
 }
 
-void draw(){
+public void draw(){
 
   if(tooMuch){
     background(185);
@@ -75,25 +90,25 @@ void draw(){
       delay(1000);
       fill(190);
       strokeWeight(sqrt(height*width)/80);
-      rect(width*6/24, height*10.25/24, width*12/24, height*3.5/24, sqrt(height*width)/100);
-      rect(width*6/24, height*14.5/24, width*12/24, height*3.5/24, sqrt(height*width)/100);
+      rect(width*6/24, height*10.25f/24, width*12/24, height*3.5f/24, sqrt(height*width)/100);
+      rect(width*6/24, height*14.5f/24, width*12/24, height*3.5f/24, sqrt(height*width)/100);
 
-      rect(width*6/24, height*6/24, width*3/24, height*3.5/24, sqrt(height*width)/100);
-      rect(width*10.5/24, height*6/24, width*3/24, height*3.5/24, sqrt(height*width)/100);
-      rect(width*15/24, height*6/24, width*3/24, height*3.5/24, sqrt(height*width)/100);
+      rect(width*6/24, height*6/24, width*3/24, height*3.5f/24, sqrt(height*width)/100);
+      rect(width*10.5f/24, height*6/24, width*3/24, height*3.5f/24, sqrt(height*width)/100);
+      rect(width*15/24, height*6/24, width*3/24, height*3.5f/24, sqrt(height*width)/100);
       fill(0);
       textAlign(CENTER);
-      textSize(sqrt(height*width)/13.5);
-      text("NEW ROUND", width/2, height*12.70/24);
+      textSize(sqrt(height*width)/13.5f);
+      text("NEW ROUND", width/2, height*12.70f/24);
       text("NEW GAME", width/2, height*17/24);
       fill(0, 0, 200);
-      text(xWins, width*7.5/24, height*8.4/24);
+      text(xWins, width*7.5f/24, height*8.4f/24);
       fill(200, 0, 200);
-      text(ties, width/2, height*8.4/24);
+      text(ties, width/2, height*8.4f/24);
       fill(200, 0, 0);
-      text(yWins, width*16.5/24, height*8.4/24);
+      text(yWins, width*16.5f/24, height*8.4f/24);
       textAlign(LEFT);
-      textSize(sqrt(height*width)/3.125);
+      textSize(sqrt(height*width)/3.125f);
     }
 
     if(playing){
@@ -167,7 +182,7 @@ void draw(){
       }
       background(185);
       textAlign(LEFT);
-      textSize(sqrt(height*width)/3.125);
+      textSize(sqrt(height*width)/3.125f);
       strokeWeight(sqrt(height*width)/40);
       stroke(0);
       fill(0);
@@ -185,7 +200,7 @@ void draw(){
       if(turn==1){
       text("Turn: O", width*23/27, height*1/24);
       }
-      textSize(sqrt(height*width)/3.125);
+      textSize(sqrt(height*width)/3.125f);
 
       fill(0);
 
@@ -210,16 +225,16 @@ void draw(){
         if(S[i] == 1){
           if(C[i] == 1){
             fill(0, 200, 0);
-            text("X", xMin + width/16.5, yMax - height/27*1.5);
+            text("X", xMin + width/16.5f, yMax - height/27*1.5f);
 
           }
           if(C[i] == 2){
             fill(200, 0, 200);
-            text("X", xMin + width/16.5, yMax - height/27*1.5);
+            text("X", xMin + width/16.5f, yMax - height/27*1.5f);
           }
           if(C[i] == 0){
             fill(0, 0, 200);
-            text("X", xMin + width/16.5, yMax - height/27*1.5);
+            text("X", xMin + width/16.5f, yMax - height/27*1.5f);
           }
 
         }
@@ -233,7 +248,7 @@ void draw(){
           if(C[i] == 0){
             fill(200, 0, 0);
           }
-          text("O", xMin + width/27, yMax - height/27*1.5);
+          text("O", xMin + width/27, yMax - height/27*1.5f);
         }
       }
     }
@@ -241,13 +256,13 @@ void draw(){
     if(startScreen){
       fill(190);
       strokeWeight(sqrt(height*width)/80);
-      rect(width*6/24, height*10.25/24, width*12/24, height*3.5/24, sqrt(height*width)/100);
+      rect(width*6/24, height*10.25f/24, width*12/24, height*3.5f/24, sqrt(height*width)/100);
       fill(0);
       textAlign(CENTER);
-      textSize(sqrt(height*width)/13.5);
-      text("NEW GAME", width/2, height*12.70/24);
+      textSize(sqrt(height*width)/13.5f);
+      text("NEW GAME", width/2, height*12.70f/24);
       textAlign(LEFT);
-      textSize(sqrt(height*width)/3.125);
+      textSize(sqrt(height*width)/3.125f);
     }
   }
   if(xWins > 99 || yWins > 99 || ties > 99){
@@ -256,7 +271,7 @@ void draw(){
   }
 }
 
-void mousePressed(){
+public void mousePressed(){
   //The following define the clickable bounding boxes for any buttons used.
   //Note that these boundaries should match those drawn in the draw() function.
 
@@ -302,7 +317,7 @@ void mousePressed(){
   }
 
   if(startScreen){
-    if (mouseX>width*6/24 && mouseX<width*18/24 && mouseY>height*10.25/24 && mouseY<height*13.75/24){
+    if (mouseX>width*6/24 && mouseX<width*18/24 && mouseY>height*10.25f/24 && mouseY<height*13.75f/24){
       startScreen = false;
       playing = true;
       redraw();
@@ -310,7 +325,7 @@ void mousePressed(){
   }
 
   if(winScreen){
-    if (mouseX>width*6/24 && mouseX<width*18/24 && mouseY>height*14.5/24 && mouseY<height*18/24){
+    if (mouseX>width*6/24 && mouseX<width*18/24 && mouseY>height*14.5f/24 && mouseY<height*18/24){
       if(turn==0){
             turn = 1;
       } else{
@@ -330,7 +345,7 @@ void mousePressed(){
       startScreen = false;
       redraw();
     }
-    if(mouseX>width*6/24 && mouseX<width*18/24 && mouseY>height*10.25/24 && mouseY<height*13.75/24){
+    if(mouseX>width*6/24 && mouseX<width*18/24 && mouseY>height*10.25f/24 && mouseY<height*13.75f/24){
       if(turn==0){
             turn = 1;
       } else{
@@ -349,4 +364,14 @@ void mousePressed(){
     }
   }
   redraw();
+}
+  public void settings() {  size(400, 400); }
+  static public void main(String[] passedArgs) {
+    String[] appletArgs = new String[] { "tic_tac_toe" };
+    if (passedArgs != null) {
+      PApplet.main(concat(appletArgs, passedArgs));
+    } else {
+      PApplet.main(appletArgs);
+    }
+  }
 }
